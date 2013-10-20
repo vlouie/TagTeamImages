@@ -3,7 +3,6 @@
 <title>TagTeam Images</title>
 <link rel="stylesheet" href="css/style.css" type="text/css">
 </head>
-<?php include 'main.php'; ?>
 <body>
 <div id="login">
   <form method="POST" action="?">
@@ -36,4 +35,5 @@
   </div>
 </div>
 </body>
+<?php include 'main.php'; ?>
 </html>
