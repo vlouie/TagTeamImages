@@ -4,20 +4,30 @@ body{
 	font-family: Verdana, Arial, sans-serif;
   margin: 0;
 }
+.divstyle{
+	border: 1px solid #cccc99;
+	border-radius: 10px;
+}
+.centered{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.shadow{
+  -moz-box-shadow: 0px 0px 5px 4px #333;
+  -webkit-box-shadow: 0px 0px 5px 4px #333;
+  box-shadow: 0px 0px 5px 4px #333;
+}
 #login{
   height: 30px;
   width: 100%;
   background: #00cc99;
-  font-size: 9pt;
+  font-size: 8pt;
   text-align: right;
   margin: 0 0 1em 0;
 }
 #login input{
-  margin-right: 1em;
-}
-.divstyle{
-	border: 1px solid #cccc99;
-	border-radius: 10px;
+  margin-right: 0.3em;
 }
 #top{
 	margin: auto;
