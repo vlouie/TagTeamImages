@@ -6,10 +6,23 @@
 <body>
 <div id="login">
   <form method="POST" action="?">
+<?php
+  session_start(); //NEED TO SET SESSION SAVE PATH BECAUSE SESSION VARIABLES AREN'T BEING SAVED
+  if (!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username'])){
+  echo "Welcome, " . $_SESSION['Username'] . "! ";
+?>
+    <input type="submit" value="log out" name="logoutButton" />
+<?php
+  }
+  else{
+?>
     username: <input type="text" name="username" size="15" />
     password: <input type="password" name="password" size="15" />
     <input type="submit" value="log in" name="loginButton" />
     <input type="submit" value="register" name="registerButton" />
+<?php
+  }
+?>
   </form>
 </div>
 <div id="top" class="divstyle shadow">
