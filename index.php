@@ -7,7 +7,9 @@
 <div id="login">
   <form method="POST" action="?">
 <?php
-  session_start(); //NEED TO SET SESSION SAVE PATH BECAUSE SESSION VARIABLES AREN'T BEING SAVED
+  session_save_path('tmp');
+  ini_set('session.gc_probability', 1);
+  session_start(); 
   if (!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username'])){
   echo "Welcome, " . $_SESSION['Username'] . "! ";
 ?>
