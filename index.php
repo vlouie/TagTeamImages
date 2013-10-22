@@ -18,8 +18,8 @@
   }
   else{
 ?>
-    username: <input type="text" name="username" size="15" />
-    password: <input type="password" name="password" size="15" />
+    username: <input type="text" name="username" size="15" maxlength="30" />
+    password: <input type="password" name="password" size="15" maxlength="30" />
     <input type="submit" value="log in" name="loginButton" />
     <input type="submit" value="register" name="registerButton" />
 <?php
