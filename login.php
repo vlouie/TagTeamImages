@@ -9,7 +9,11 @@
     $alltuples = array (
       $tuple
     );
-    executeBoundSQL("insert into tag_user values (:name, :type, :password)", $alltuples);
+    $result = executeBoundSQL("insert into tag_user values (:name, :type, :password)", $alltuples);
+    $_SESSION['Username'] = $_POST['username'];
+    $_SESSION['LoggedIn'] = 1;
+    echo "<meta http-equiv='refresh' content='0;index.php'>";
+    
     OCICommit($db_conn);
   }
   elseif (array_key_exists('loginButton', $_POST)){
@@ -23,15 +27,12 @@
     $result = executeBoundSQL("select * from tag_user where user_name=:name and password=:password", $alltuples);
     $row = OCI_Fetch_Array($result, OCI_BOTH);
     if ($row){
-      //var_dump($row);
       $_SESSION['Username'] = $_POST['username'];
       $_SESSION['LoggedIn'] = 1;
       echo "<meta http-equiv='refresh' content='0;index.php'>";
-      //header('Location: temp.php');
     }
   }
   elseif (array_key_exists('logoutButton', $_POST)){
-    //session_start();
     $_SESSION = array();
 
     if (ini_get("session.use_cookies")){
