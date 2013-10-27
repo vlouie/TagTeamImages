@@ -1,4 +1,5 @@
 <?php
+/* at some point, we'll have to add the user type to the Session variables */
  if ($db_conn){
   if (array_key_exists('registerButton', $_POST)){
     if ($_POST['username'] && $_POST['password']){
