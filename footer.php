@@ -15,5 +15,13 @@
   </div>
 </div>
 </body>
-<?php include 'main.php'; ?>
+<?php 
+if ($db_conn=OCILogon("ora_g1f7", "a70279096", "ug")) {
+  //echo "Successfully connected to Oracle.\n";
+  OCILogoff($db_conn);
+} else {
+  $err = OCIError();
+  echo "Oracle Connect Error " . $err['message'];
+}
+?>
 </html>

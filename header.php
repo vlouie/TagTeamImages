@@ -8,9 +8,14 @@
 <div id="login">
   <form method="POST" action="?">
 <?php
+  $db_conn=OCILogon("ora_g1f7", "a70279096", "ug");
+  $success = True; 
   session_save_path('tmp');
   ini_set('session.gc_probability', 1);
   session_start(); 
+
+  include 'main.php';
+
   if (!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username'])){
   echo "Welcome, " . $_SESSION['Username'] . "! ";
 ?>
@@ -25,6 +30,7 @@
     <input type="submit" value="register" name="registerButton" />
 <?php
   }
+  include 'login.php';
 ?>
   </form>
 </div>

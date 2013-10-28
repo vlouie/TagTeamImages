@@ -1,7 +1,4 @@
 <?php
-$db_conn=OCILogon("ora_g1f7", "a70279096", "ug");
-$success = True; 
-
 function executeBoundSQL($cmdstr, $list) {
 	global $db_conn, $success;
 	$statement = OCIParse($db_conn, $cmdstr);
@@ -31,15 +28,6 @@ function executeBoundSQL($cmdstr, $list) {
 		}
     return $statement;
 	}
-}
-
-if ($db_conn=OCILogon("ora_g1f7", "a70279096", "ug")) {
-  //echo "Successfully connected to Oracle.\n";
-  include 'login.php';
-  OCILogoff($db_conn);
-} else {
-  $err = OCIError();
-  echo "Oracle Connect Error " . $err['message'];
 }
 
 ?>
