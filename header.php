@@ -35,7 +35,7 @@
   </form>
 </div>
 <div id="top" class="divstyle shadow">
-  <h2>TagTeam</h2>
+  <a href="index.php"><h2>TagTeam</h2></a>
   <input type="text" name="searchBox" size="25" />
   <input type="submit" value="search" name="searchButton" />
 </div>
