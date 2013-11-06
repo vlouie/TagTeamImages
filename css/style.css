@@ -8,6 +8,13 @@ a{
   text-decoration: none;
   color: inherit;
 }
+h4{
+  background: #00cc99;
+  width: inherit;
+  padding: 0.4em;
+  border-radius: 10px 10px 0px 0px;
+  margin-top: 0;
+}
 .divstyle{
 	border: 1px solid #cccc99;
 	border-radius: 10px;
@@ -53,6 +60,12 @@ a{
 #top input{
   float: left;
   margin-top: 4px;
+}
+#commentSection{
+  padding: 0; 
+}
+#comment{
+  padding: 1em;
 }
 #container{
   margin: auto;

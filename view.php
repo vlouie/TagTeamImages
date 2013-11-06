@@ -26,7 +26,20 @@ if ($db_conn){
   echo "</div>";
 
   echo "<div class='innerdiv centered' id='commentSection'>";
-  echo "COMMENTS!!!"; // comment logic here
+  echo "<h4>Comments</h4>";
+  $tuple2 = array (
+    ":id" => $img_id
+  );
+  $alltuples2 = array (
+    $tuple2
+  );
+  $result2 = executeBoundSQL("select * from tag_comment where image_id=:id", $alltuples2);
+	while ($row2 = OCI_Fetch_Array($result2, OCI_BOTH)) {
+    echo "<div id='comment'>" . $row2["USER_COMMENT"] . "</div>";
+  }
+  echo "<div id='comment'><textarea cols='50' rows = '3'></textarea><br /><input type='submit' value='post' name='postCommentButton' /></div>";
+  //$row2 = OCI_Fetch_Array($result2, OCI_BOTH);
+  //var_dump($row2);
   echo "</div>";
 }
 ?>
