@@ -17,7 +17,7 @@
   include 'main.php';
 
   if (!empty($_SESSION['LoggedIn']) && !empty($_SESSION['Username'])){
-  echo "Welcome, " . $_SESSION['Username'] . "! ";
+  echo "Welcome, <a href='account.php'><b>" . $_SESSION['Username'] . "</b></a>! ";
 ?>
     <input type="submit" value="log out" name="logoutButton" />
 <?php
