@@ -28,7 +28,6 @@
         $alltuples = array (
           $tuple
         );
-        var_dump($alltuples);
         $result = executeBoundSQL("insert into tag_image values (img_seq.nextval, :username, :url, :caption, 0, 0, CURRENT_TIMESTAMP)", $alltuples);
         OCICommit($db_conn);
 
@@ -42,10 +41,10 @@
             $alltagtuples = array (
               $selecttagtuple
             );
-            $select_tag = executeBoundSQL("select * from tag where tag_value=:tagValue", $alltagtuples);
+            $select_tag = executeBoundSQL("select * from tag where tag_value=:tagVal", $alltagtuples);
             $tag_row = OCI_Fetch_Array($select_tag, OCI_BOTH);
             $tag_image_tuple = array (
-              ":img_id" => $row['IMAGE_ID'],
+              ":img_id" => $select_row['IMAGE_ID'],
               ":tag_id" => $tag_row['TAG_ID']
             );
             $all_tagimage = array (

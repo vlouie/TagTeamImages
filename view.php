@@ -17,6 +17,20 @@ if ($db_conn){
   );
   $result = executeBoundSQL("select * from tag_image where image_id=:id", $alltuples);
   $row = OCI_Fetch_Array($result, OCI_BOTH);
+
+  $tag_array = array();
+  $tag_many_result = executeBoundSQL("select * from tag_many_image where image_id=:id", $alltuples);
+	while ($tag_many_row = OCI_Fetch_Array($tag_many_result, OCI_BOTH)) {
+    $tag_tuple = array (
+      ":id" => $tag_many_row['TAG_ID']
+    );
+    $alltagtuples = array (
+      $tag_tuple
+    );
+    $tagresult = executeBoundSQL("select * from tag where tag_id=:id", $alltagtuples);
+    $tagrow = OCI_Fetch_Array($tagresult, OCI_BOTH);
+    array_push($tag_array, $tagrow['TAG_VALUE']);
+  }
   $conv_date = strtotime($row['UPLOAD_DATE']);
   $date = DateTime::createFromFormat("M-d-Y", $conv_date);
   echo "<img src='" . $row['IMAGE_LINK'] . "' class='centered maxSize' />";
@@ -24,7 +38,7 @@ if ($db_conn){
   echo "<b>Uploaded by " . $row['USER_NAME'] . " at " . gmdate("H:i \o\\n M d, Y", $conv_date) . "</b><br />";
   echo "<b>Views:</b> " . $row['VIEW_NO'] . "<br />";
   echo "<b>Rating:</b> " . $row['RATING'] . "<br />";
-  echo "<b>Tags:</b> <br />";
+  echo "<b>Tags:</b> " . implode(", ", $tag_array) . " <br />";
   if ($row['CAPTION']){
     echo "\"" . $row['CAPTION'] . "\" <br />";
   }
