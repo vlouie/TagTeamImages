@@ -32,7 +32,6 @@ if ($db_conn){
     array_push($tag_array, $tagrow['TAG_VALUE']);
   }
   $conv_date = strtotime($row['UPLOAD_DATE']);
-  $date = DateTime::createFromFormat("M-d-Y", $conv_date);
   echo "<img src='" . $row['IMAGE_LINK'] . "' class='centered maxSize' />";
   echo "<div class='innerdiv centered'>";
   echo "<b>Uploaded by " . $row['USER_NAME'] . " at " . gmdate("H:i \o\\n M d, Y", $conv_date) . "</b><br />";
@@ -48,7 +47,12 @@ if ($db_conn){
 
   echo "<div class='innerdiv centered' id='commentSection'>";
   echo "<h4>Comments</h4>";
-  echo "<div id='comment'><textarea cols='50' rows = '3'></textarea><br /><input type='submit' value='post' name='postCommentButton' /></div>";
+  echo "<form method='POST' action'?'>";
+  echo "<div id='comment'>";
+  echo "<textarea name='commentBox' cols='50' rows = '3'></textarea><br />";
+  echo "<input type='submit' value='post' name='postCommentButton' />";
+  echo "</div>";
+  echo "</form>";
   $tuple2 = array (
     ":id" => $img_id
   );
@@ -58,10 +62,10 @@ if ($db_conn){
   $result2 = executeBoundSQL("select * from tag_comment where image_id=:id", $alltuples2);
 	while ($row2 = OCI_Fetch_Array($result2, OCI_BOTH)) {
     $convcomment_date = strtotime($row2['COMMENT_DATE']);
-    $commentdate = DateTime::createFromFormat("M-d-Y", $convcomment_date);
-    echo "<div id='comment'>" . $row2["USER_COMMENT"] . "<br /><sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $commentdate) . "</sup></div>";
+    echo "<div id='comment'>" . $row2["USER_COMMENT"] . "<br /><sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $convcomment_date) . "</sup></div>";
   }
   echo "</div>";
+  include 'comment.php';
 }
 ?>
 <?php include 'footer.php'; ?>  
