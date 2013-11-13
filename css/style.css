@@ -35,6 +35,9 @@ h4{
   -webkit-box-shadow: 0px 0px 5px 4px #333;
   box-shadow: 0px 0px 5px 4px #333;
 }
+.maxSize{
+  max-width: 650px;
+}
 #login{
   height: 30px;
   width: 100%;

@@ -5,6 +5,7 @@
   ini_set('session.gc_probability', 1);
   session_start();
   /************/
+  echo time();
   echo "session id: " . session_id();
   if (!isset($_SESSION['Username'])){
     echo "<p>Not set :(</p>";

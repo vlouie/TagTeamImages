@@ -3,6 +3,7 @@
   <div id="sidebar" class="divstyle shadow">
     <h3>Upload</h3>
     <!-- need to ensure that user is logged in to upload? -->
+    <form method="POST" action="?">
     <b>URL</b>
     <input type="text" name="imgUrl" />
     <br />
@@ -12,6 +13,10 @@
     <b>Tags</b>
     <input type="text" name="imgTags" />
     <input type="submit" value="Upload" name="uploadButton" />
+    </form>
+    <?php
+      include 'upload.php';
+    ?>
   </div>
 </div>
 </body>

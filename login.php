@@ -6,7 +6,7 @@
       $tuple = array (
         ":name" => $_POST['username'],
         ":password" => $_POST['password'],
-        ":type" => 'USER'
+        ":type" => 'user'
       );
       $alltuples = array (
         $tuple
