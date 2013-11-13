@@ -48,6 +48,7 @@ if ($db_conn){
 
   echo "<div class='innerdiv centered' id='commentSection'>";
   echo "<h4>Comments</h4>";
+  echo "<div id='comment'><textarea cols='50' rows = '3'></textarea><br /><input type='submit' value='post' name='postCommentButton' /></div>";
   $tuple2 = array (
     ":id" => $img_id
   );
@@ -56,9 +57,10 @@ if ($db_conn){
   );
   $result2 = executeBoundSQL("select * from tag_comment where image_id=:id", $alltuples2);
 	while ($row2 = OCI_Fetch_Array($result2, OCI_BOTH)) {
-    echo "<div id='comment'>" . $row2["USER_COMMENT"] . "</div>";
+    $convcomment_date = strtotime($row2['COMMENT_DATE']);
+    $commentdate = DateTime::createFromFormat("M-d-Y", $convcomment_date);
+    echo "<div id='comment'>" . $row2["USER_COMMENT"] . "<br /><sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $commentdate) . "</sup></div>";
   }
-  echo "<div id='comment'><textarea cols='50' rows = '3'></textarea><br /><input type='submit' value='post' name='postCommentButton' /></div>";
   echo "</div>";
 }
 ?>
