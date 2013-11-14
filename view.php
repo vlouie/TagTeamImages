@@ -18,6 +18,9 @@ if ($db_conn){
   $result = executeBoundSQL("select * from tag_image where image_id=:id", $alltuples);
   $row = OCI_Fetch_Array($result, OCI_BOTH);
 
+  $updateresult = executeBoundSQL("update tag_image set view_no=view_no+1 where image_id=:id",$alltuples);
+  OCICommit($db_conn);
+
   $tag_array = array();
   $tag_many_result = executeBoundSQL("select * from tag_many_image where image_id=:id", $alltuples);
 	while ($tag_many_row = OCI_Fetch_Array($tag_many_result, OCI_BOTH)) {
