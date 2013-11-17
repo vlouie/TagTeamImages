@@ -1,5 +1,6 @@
+<!-- Use index.php as a template for any subsequent pages -->
 <?php include 'header.php'; ?>
-<!-- Content for homepage --> 
+<!-- START OF CONTENT FOR HOMEPAGE --> 
 <h3>Most Recent Uploads</h3>
 <?php
 if ($db_conn){

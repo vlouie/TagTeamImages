@@ -13,7 +13,7 @@
         $allcommenttuples = array (
           $comment_tuple
         );
-        $comment_result = executeBoundSQL("insert into tag_comment values (comment_seq.nextval, :username, :img_id, :commentVal, CURRENT_TIMESTAMP, 0)", $allcommenttuples);
+        $comment_result = executeBoundSQL("insert into tag_comment values (comment_seq.nextval, :username, :img_id, :commentVal, CURRENT_TIMESTAMP)", $allcommenttuples);
         OCICommit($db_conn);
         header('Location: ' . $_SERVER['REQUEST_URI']);
       }

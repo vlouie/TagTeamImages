@@ -44,8 +44,11 @@ if ($db_conn){
   if ($row['CAPTION']){
     echo "\"" . $row['CAPTION'] . "\" <br />";
   }
+  echo "<form method='POST' action'?'>";
   echo "<input type='submit' value='+1' name='voteUpButton' />";
   echo "<input type='submit' value='-1' name='voteDownButton' />";
+  echo "</form>";
+  include 'rating.php';
   echo "</div>";
 
   echo "<div class='innerdiv centered' id='commentSection'>";
