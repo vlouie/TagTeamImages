@@ -49,6 +49,12 @@ if ($db_conn){
   echo "<input type='submit' value='-1' name='voteDownButton' />";
   echo "</form>";
   include 'rating.php';
+  if ($_SESSION['UserType'] == 'admin'){
+    echo "<form method='POST' action=''>";
+    echo "<input type='hidden' name='deleteImage' value='" . $img_id . "' />";
+    echo "<input type='submit' value='Delete Image' name='delImageSubmit' onclick='return confirm(\"Are you sure? Once deleted, this image cannot be recovered!\")' />";
+    echo "</form>";
+  }
   echo "</div>";
 
   echo "<div class='innerdiv centered' id='commentSection'>";
@@ -68,10 +74,22 @@ if ($db_conn){
   $result2 = executeBoundSQL("select * from tag_comment where image_id=:id", $alltuples2);
 	while ($row2 = OCI_Fetch_Array($result2, OCI_BOTH)) {
     $convcomment_date = strtotime($row2['COMMENT_DATE']);
-    echo "<div id='comment'>" . $row2["USER_COMMENT"] . "<br /><sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $convcomment_date) . "</sup></div>";
+    echo "<div id='comment'>";
+    echo $row2["USER_COMMENT"] . "<br />";
+    //echo "<sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $convcomment_date) . "</sup>";
+    echo "<sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $convcomment_date);
+    if ($_SESSION['UserType'] == 'admin'){
+      echo "<form class='commentDelete' method='POST' action=''>";
+      echo "<input type='hidden' name='deleteComment' value='" . $row2["COMMENT_ID"] . "' />";
+      echo "<input type='submit' value='x' name='delCommentSubmit' />";
+      echo "</form>";
+    }
+    echo "</sup>";
+    echo "</div>";
   }
   echo "</div>";
   include 'comment.php';
+  include 'view_admin.php';
 }
 ?>
 <?php include 'footer.php'; ?>  

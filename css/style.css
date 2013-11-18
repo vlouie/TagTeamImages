@@ -45,6 +45,11 @@ form{
 .maxSize{
   max-width: 650px;
 }
+.commentDelete{
+  float:right;
+  position:relative;
+  top: -15px;
+}
 #login{
   height: 30px;
   width: 100%;

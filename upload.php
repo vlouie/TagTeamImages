@@ -54,9 +54,11 @@
             OCICommit($db_conn);
           }
           unset($tag_val);
+          header('Location: ' . $_SERVER['REQUEST_URI']);
         }
       }
       else{
+        echo "<script>alert('Please enter an image URL');</script>";
       }
     }
   }

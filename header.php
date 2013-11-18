@@ -6,7 +6,7 @@
 </head>
 <body>
 <div id="login">
-  <form method="POST" action="?">
+  <form method="POST" action="">
 <?php
   $db_conn=OCILogon("ora_g1f7", "a70279096", "ug");
   $success = True; 

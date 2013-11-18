@@ -17,6 +17,9 @@
         OCICommit($db_conn);
         header('Location: ' . $_SERVER['REQUEST_URI']);
       }
+      else{
+        echo "<script>alert('You must be logged in to comment');</script>";
+      }
     }
   }
 ?>
