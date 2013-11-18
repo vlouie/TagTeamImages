@@ -1,5 +1,4 @@
 <?php
-/* at some point, we'll have to add the user type to the Session variables */
  if ($db_conn){
   if (array_key_exists('registerButton', $_POST)){
     if ($_POST['username'] && $_POST['password']){
@@ -14,6 +13,7 @@
       $result = executeBoundSQL("insert into tag_user values (:name, :type, :password)", $alltuples);
       $_SESSION['Username'] = $_POST['username'];
       $_SESSION['LoggedIn'] = 1;
+      $_SESSION['UserType'] = 'user';
       echo "<meta http-equiv='refresh' content='0;index.php'>";
       
       OCICommit($db_conn);
@@ -36,7 +36,11 @@
       if ($row){
         $_SESSION['Username'] = $_POST['username'];
         $_SESSION['LoggedIn'] = 1;
+        $_SESSION['UserType'] = $row['USER_TYPE'];
         echo "<meta http-equiv='refresh' content='0;index.php'>";
+      }
+      else{
+        echo "<script>alert('This username/password combination does not exist');</script>";
       }
     } 
     else{
