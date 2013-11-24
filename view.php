@@ -15,14 +15,14 @@ if ($db_conn){
   $alltuples = array (
     $tuple
   );
-  $result = executeBoundSQL("select * from tag_image where image_id=:id", $alltuples);
+  $result = executeBoundSQL("select upload_date, image_link, user_name, view_no, rating, caption from tag_image where image_id=:id", $alltuples);
   $row = OCI_Fetch_Array($result, OCI_BOTH);
 
   $updateresult = executeBoundSQL("update tag_image set view_no=view_no+1 where image_id=:id",$alltuples);
   OCICommit($db_conn);
 
   $tag_array = array();
-  $tag_many_result = executeBoundSQL("select * from tag_many_image where image_id=:id", $alltuples);
+  $tag_many_result = executeBoundSQL("select tag_id from tag_many_image where image_id=:id", $alltuples);
 	while ($tag_many_row = OCI_Fetch_Array($tag_many_result, OCI_BOTH)) {
     $tag_tuple = array (
       ":id" => $tag_many_row['TAG_ID']
@@ -30,7 +30,7 @@ if ($db_conn){
     $alltagtuples = array (
       $tag_tuple
     );
-    $tagresult = executeBoundSQL("select * from tag where tag_id=:id", $alltagtuples);
+    $tagresult = executeBoundSQL("select tag_value from tag where tag_id=:id", $alltagtuples);
     $tagrow = OCI_Fetch_Array($tagresult, OCI_BOTH);
     array_push($tag_array, $tagrow['TAG_VALUE']);
   }
@@ -71,12 +71,11 @@ if ($db_conn){
   $alltuples2 = array (
     $tuple2
   );
-  $result2 = executeBoundSQL("select * from tag_comment where image_id=:id", $alltuples2);
+  $result2 = executeBoundSQL("select comment_date, user_comment, user_name, comment_id from tag_comment where image_id=:id", $alltuples2);
 	while ($row2 = OCI_Fetch_Array($result2, OCI_BOTH)) {
     $convcomment_date = strtotime($row2['COMMENT_DATE']);
     echo "<div id='comment'>";
     echo $row2["USER_COMMENT"] . "<br />";
-    //echo "<sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $convcomment_date) . "</sup>";
     echo "<sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $convcomment_date);
     if ($_SESSION['UserType'] == 'admin'){
       echo "<form class='commentDelete' method='POST' action=''>";

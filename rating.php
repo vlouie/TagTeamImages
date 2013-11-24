@@ -12,7 +12,7 @@
         $allrateuptuples = array (
           $rateup_tuple
         );
-        $check_rate = executeBoundSQL("select * from tag_vote where image_id=:img_id and user_name=:username", $allrateuptuples);
+        $check_rate = executeBoundSQL("select vote_id from tag_vote where image_id=:img_id and user_name=:username", $allrateuptuples);
         $check_row = OCI_Fetch_Array($check_rate, OCI_BOTH);
         if (!$check_row){
           $rateup_result = executeBoundSQL("insert into tag_vote values (vote_seq.nextval, 1, :username, :img_id)", $allrateuptuples);
@@ -41,7 +41,7 @@
         $allratedowntuples = array (
           $ratedown_tuple
         );
-        $check_rate = executeBoundSQL("select * from tag_vote where image_id=:img_id and user_name=:username", $allratedowntuples);
+        $check_rate = executeBoundSQL("select vote_id from tag_vote where image_id=:img_id and user_name=:username", $allratedowntuples);
         $check_row = OCI_Fetch_Array($check_rate, OCI_BOTH);
         if (!$check_row){
           $ratedown_result = executeBoundSQL("insert into tag_vote values (vote_seq.nextval, -1, :username, :img_id)", $allratedowntuples);

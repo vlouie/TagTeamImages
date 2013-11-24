@@ -30,18 +30,22 @@ CREATE TABLE TAG_IMAGE(image_id numeric(10), user_name varchar2(30) NOT NULL, im
 	CHECK (view_no >= 0));
 
 CREATE SEQUENCE IMG_SEQ
-	start with 8 
+	start with 7
 	increment by 1
 	nomaxvalue;
 
-CREATE TABLE TAG_MANY_IMAGE(image_id numeric(10) REFERENCES tag_image(image_id) on delete cascade, tag_id numeric(10) REFERENCES tag(tag_id), 
+CREATE TABLE TAG_MANY_IMAGE(image_id numeric(10) 
+REFERENCES tag_image(image_id) on delete cascade, tag_id numeric(10) REFERENCES tag(tag_id), 
 	CONSTRAINT tag_image_comp_pk PRIMARY KEY (image_id, tag_id)); 
 
 --CREATE TABLE TAG_COMMENT (comment_id numeric (10), user_name varchar2(30) NOT NULL, image_id numeric(10) NOT NULL, user_comment varchar2(255), comment_date timestamp(6) NOT NULL, comment_rating numeric(10) default 0 not null, 
+
 CREATE TABLE TAG_COMMENT (comment_id numeric (10), user_name varchar2(30) NOT NULL, image_id numeric(10) NOT NULL, user_comment varchar2(255), comment_date timestamp(6) NOT NULL, 
 	CONSTRAINT comment_pk PRIMARY KEY (comment_id),
-	CONSTRAINT image_comment_fk FOREIGN KEY (image_id) REFERENCES tag_image(image_id) on delete cascade,
-	CONSTRAINT user_comment_fk FOREIGN KEY (user_name) REFERENCES tag_user(user_name));
+	CONSTRAINT image_comment_fk FOREIGN KEY (image_id) 
+REFERENCES tag_image(image_id) on delete cascade,
+	CONSTRAINT user_comment_fk FOREIGN KEY (user_name) 
+REFERENCES tag_user(user_name));
 
 CREATE SEQUENCE COMMENT_SEQ
 	start with 8 
@@ -51,7 +55,7 @@ CREATE SEQUENCE COMMENT_SEQ
 CREATE TABLE TAG_VOTE(vote_id numeric(10), vote numeric(10), user_name varchar2(30) NOT NULL, image_id numeric(10) NOT NULL,
 	CONSTRAINT vote_pk PRIMARY KEY (vote_id),
 	CONSTRAINT user_vote_fk FOREIGN KEY (user_name) REFERENCES tag_user(user_name),
-	CONSTRAINT image_vote_fk FOREIGN KEY (image_id) REFERENCES tag_image(image_id),
+	CONSTRAINT image_vote_fk FOREIGN KEY (image_id) REFERENCES tag_image(image_id) on delete cascade,
 	CONSTRAINT unique_user_vote UNIQUE (user_name, image_id), 
 	CHECK (vote in (-1, 1)));
 
@@ -143,7 +147,6 @@ INSERT INTO TAG_RECORD  VALUES (6, 'best', '6');
 
 -- don't forget this, or nothing will be saved to the database!
 commit;
-
 
 
 

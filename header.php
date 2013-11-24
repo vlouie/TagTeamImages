@@ -3,6 +3,8 @@
 <head>
 <title>TagTeam Images</title>
 <link rel="stylesheet" href="css/style.css" type="text/css">
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="js/image_crop.js"></script>
 </head>
 <body>
 <div id="login">
@@ -36,8 +38,15 @@
 </div>
 <div id="top" class="divstyle shadow">
   <a href="index.php"><h2>TagTeam</h2></a>
+    <form method="POST" action="search.php">
+    <select name='searchType'>
+      <option>Text</option>
+      <option>User</option>
+      <option>Tag</option>
+    </select>
   <input type="text" name="searchBox" size="25" />
   <input type="submit" value="search" name="searchButton" />
+  </form>
 </div>
 <div id="container">
   <div id="content" class="divstyle shadow">

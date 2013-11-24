@@ -10,59 +10,48 @@
 
     echo "<p>REPORT VALUES</p>";
     
-    $minrating = $_POST['minrating'];
-        
-    if (isset($minrating)) {
-        echo "<p>Images rated less than or equal to " . $minrating . " </p>";
+    // 1) Selection and Projection Query: User selects a max rating range, and
+    // 2) Join: Display all the images within a specified tag id, joining to
+    //          the tag_image table to the tag_many_image table
+    $maxrating = $_POST['maxrating'];
+    $selectedTagIdAndName = $_POST['selectedTag'];
 
-        $tuple1 = array (
-                        ":minval" => $minrating
-                        );
-        $alltuples1 = array (
-                            $tuple1
-                            );
+    // Parse out the selected Tag Id and Name
+    list($selectedTagId, $selectedTagName) = explode('|', $selectedTagIdAndName);    
+    
+    echo " selected id = " . $selectedTagId . " and " . $selectedTagName;
+    
+    echo "<p>Images that have the tag " . $selectedTagName .
+    " and a rating greater than or equal to " . $maxrating . " </p>";
+    
+    if (isset($maxrating) && isset($selectedTagId) && isset($selectedTagName)) {
+        
+        $tuple = array (
+                         ":selectedTagId" => $selectedTagId ,
+                         ":maxrating" => $maxrating
+                         );
+        $alltuples = array (
+                             $tuple
+                             );
         // reuse the same db connection
         if ($db_conn){
             
+            $result = executeBoundSQL("SELECT i.image_id, i.image_link " .
+                                       "FROM tag_image i INNER JOIN tag_many_image m " .
+                                       "ON m.image_id = i.image_id " .
+                                       "WHERE m.tag_id = :selectedTagId " .
+                                       "AND i.rating >= :maxrating", $alltuples);
             
-            $result1 = executeBoundSQL("select image_id, image_link, rating from tag_image where rating <= :minval", $alltuples1);
-            $row1 = OCI_Fetch_Array($result1, OCI_BOTH);
-            while ($row1 = OCI_Fetch_Array($result1, OCI_BOTH)) {
-                // TODO include the rating info
-                echo "<a href='view.php?id=" . $row1["IMAGE_ID"] . "'>";
-                echo "<img src='" . $row1['IMAGE_LINK'] . "' width='100px' />";
+            $row = OCI_Fetch_Array($result, OCI_BOTH);
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                echo "<a href='view.php?id=" . $row["IMAGE_ID"] . "'>";
+                echo "<img src='" . $row['IMAGE_LINK'] . "' width='100px' />";
                 echo "</a>";
             }
         }
     } else {
         
-        echo " no rating set ";
+        echo "<p>Please select some report criteria from the previous page.</p>";
     }
-
-    $maxrating = $_POST['maxrating'];
-    echo "<p>Images rated greater than or equal to " . $maxrating . " </p>";
-
-    if (isset($maxrating)) {
-        
-        $tuple2 = array (
-                        ":maxval" => $maxrating
-                        );
-        $alltuples2 = array (
-                            $tuple2
-                            );
-        // reuse the same db connection
-        if ($db_conn){
-            
-            
-            $result2 = executeBoundSQL("select image_id, image_link, rating from tag_image where rating >= :maxval", $alltuples2);
-            $row2 = OCI_Fetch_Array($result2, OCI_BOTH);
-            while ($row2 = OCI_Fetch_Array($result2, OCI_BOTH)) {
-                //TODO display individual rating
-                echo "<a href='view.php?id=" . $row2["IMAGE_ID"] . "'>";
-                echo "<img src='" . $row2['IMAGE_LINK'] . "' width='100px' />";
-                echo "</a>";
-            }
-        }
-    }
-    //close the connection ??
+   
     ?>

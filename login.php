@@ -14,7 +14,8 @@
       $_SESSION['Username'] = $_POST['username'];
       $_SESSION['LoggedIn'] = 1;
       $_SESSION['UserType'] = 'user';
-      echo "<meta http-equiv='refresh' content='0;index.php'>";
+      //echo "<meta http-equiv='refresh' content='0;index.php'>";
+      header('Location: ' . $_SERVER['REQUEST_URI']);
       
       OCICommit($db_conn);
     }
@@ -31,13 +32,14 @@
       $alltuples = array (
         $tuple
       );
-      $result = executeBoundSQL("select * from tag_user where user_name=:name and password=:password", $alltuples);
+      $result = executeBoundSQL("select user_type from tag_user where user_name=:name and password=:password", $alltuples);
       $row = OCI_Fetch_Array($result, OCI_BOTH);
       if ($row){
         $_SESSION['Username'] = $_POST['username'];
         $_SESSION['LoggedIn'] = 1;
         $_SESSION['UserType'] = $row['USER_TYPE'];
-        echo "<meta http-equiv='refresh' content='0;index.php'>";
+        //echo "<meta http-equiv='refresh' content='0;index.php'>";
+        header('Location: ' . $_SERVER['REQUEST_URI']);
       }
       else{
         echo "<script>alert('This username/password combination does not exist');</script>";
@@ -58,7 +60,8 @@
       );
     }
     session_destroy();
-    echo "<meta http-equiv='refresh' content='0;index.php'>";
+    //echo "<meta http-equiv='refresh' content='0;index.php'>";
+    header('Location: ' . $_SERVER['REQUEST_URI']);
   }
  }
 ?>

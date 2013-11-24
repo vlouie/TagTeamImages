@@ -4,13 +4,13 @@
     <h3>Upload</h3>
     <!-- need to ensure that user is logged in to upload? -->
     <form method="POST" action="?">
-    <b>URL</b>
+    <b>URL</b><br />
     <input type="text" name="imgUrl" />
     <br />
-    <b>Caption</b>
+    <b>Caption</b><br />
     <input type="text" name="imgCaption" />
     <br />
-    <b>Tags</b>
+    <b>Tags</b><br />
     <input type="text" name="imgTags" />
     <input type="submit" value="Upload" name="uploadButton" />
     </form>
