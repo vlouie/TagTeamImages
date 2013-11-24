@@ -46,6 +46,10 @@ input[type="submit"]{
 	padding: 0.2em 0.7em 0.3em 0.7em;
 	font-weight:bold;
 }
+input[type="submit"]:hover{
+	background: #000;
+	color: #cccccc;
+}
 .cropped{
   position:relative;
 }

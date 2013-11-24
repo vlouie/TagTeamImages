@@ -3,7 +3,7 @@
   <div id="sidebar" class="divstyle shadow">
     <h3>Upload</h3>
     <!-- need to ensure that user is logged in to upload? -->
-    <form method="POST" action="?">
+    <form method="POST" action="index.php">
     <b>URL</b><br />
     <input type="text" name="imgUrl" />
     <br />
