@@ -37,7 +37,7 @@ if ($db_conn){
   $conv_date = strtotime($row['UPLOAD_DATE']);
   echo "<img src='" . $row['IMAGE_LINK'] . "' class='centered maxSize' />";
   echo "<div class='innerdiv centered'>";
-  echo "<b>Uploaded by " . $row['USER_NAME'] . " at " . gmdate("H:i \o\\n M d, Y", $conv_date) . "</b><br />";
+  echo "<b>Uploaded by " . $row['USER_NAME'] . " at " . date("H:i \P\S\T \o\\n M d, Y", $conv_date) . "</b><br />";
   echo "<b>Views:</b> " . $row['VIEW_NO'] . "<br />";
   echo "<b>Rating:</b> " . $row['RATING'] . "<br />";
   echo "<b>Tags:</b> " . implode(", ", $tag_array) . " <br />";
@@ -76,7 +76,7 @@ if ($db_conn){
     $convcomment_date = strtotime($row2['COMMENT_DATE']);
     echo "<div id='comment'>";
     echo $row2["USER_COMMENT"] . "<br />";
-    echo "<sup>- " . $row2["USER_NAME"] . " at " . gmdate("H:i \o\\n M d, Y", $convcomment_date);
+    echo "<sup>- " . $row2["USER_NAME"] . " at " . date("H:i \P\S\T \o\\n M d, Y", $convcomment_date);
     if ($_SESSION['UserType'] == 'admin'){
       echo "<form class='commentDelete' method='POST' action=''>";
       echo "<input type='hidden' name='deleteComment' value='" . $row2["COMMENT_ID"] . "' />";

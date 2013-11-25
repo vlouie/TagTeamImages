@@ -15,6 +15,7 @@
   session_save_path('tmp');
   ini_set('session.gc_probability', 1);
   session_start(); 
+  date_default_timezone_set('America/Los_Angeles');
 
   include 'main.php';
 
@@ -38,14 +39,15 @@
 </div>
 <div id="top" class="divstyle shadow">
   <a href="index.php"><h2>TagTeam</h2></a>
-    <form method="POST" action="search.php">
+  <form method="POST" action="search.php">
     <select name='searchType'>
       <option>Text</option>
       <option>User</option>
       <option>Tag</option>
+      <option>Surprise Me!</option>
     </select>
   <input type="text" name="searchBox" size="25" />
-  <input type="submit" value="search" name="searchButton" />
+  <input type="submit" value="search" name="searchButton"/>
   </form>
 </div>
 <div id="container">
