@@ -5,13 +5,13 @@
     <!-- need to ensure that user is logged in to upload? -->
     <form method="POST" action="index.php">
     <b>URL</b><br />
-    <input type="text" name="imgUrl" />
+    <input type="text" name="imgUrl" placeholder=".jpg, .gif, .png, etc." maxlength="30" />
     <br />
     <b>Caption</b><br />
-    <input type="text" name="imgCaption" />
+    <input type="text" name="imgCaption" placeholder="optional" maxlength="100" />
     <br />
     <b>Tags</b><br />
-    <input type="text" name="imgTags" />
+    <input type="text" name="imgTags" placeholder="comma-separated" />
     <input type="submit" value="Upload" name="uploadButton" />
     </form>
     <?php

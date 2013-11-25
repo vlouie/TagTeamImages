@@ -2,59 +2,66 @@
   if ($db_conn){
     if (array_key_exists('uploadButton', $_POST)){
       if ($_POST['imgUrl']){
-        $tag_array = explode(',', $_POST['imgTags']);
-        foreach ($tag_array as &$tag_val){
-          $check_tuple = array (
-            ":tagValue" => $tag_val
-          );
-          $allchecktuples = array (
-            $check_tuple
-          );
-          $check_result = executeBoundSQL("select tag_id from tag where tag_value=:tagValue", $allchecktuples);
-          $check_row = OCI_Fetch_Array($check_result, OCI_BOTH);
-          if (!$check_row){
-            $tag_insert = executeBoundSQL("insert into tag values (tag_seq.nextval, :tagValue)", $allchecktuples);
-            OCICommit($db_conn);
-          }
-          else{
-          }
-        }
-        unset($tag_val);
-        $tuple = array (
-          ":url" => $_POST['imgUrl'],
-          ":caption" => $_POST['imgCaption'],
-          ":username" => $_SESSION['Username'],
-        );
-        $alltuples = array (
-          $tuple
-        );
-        $result = executeBoundSQL("insert into tag_image values (img_seq.nextval, :username, :url, :caption, 0, 0, CURRENT_TIMESTAMP)", $alltuples);
-        OCICommit($db_conn);
-
-        $select_id = executeBoundSQL("select image_id from tag_image where image_link=:url and user_name=:username", $alltuples);
-        $select_row = OCI_Fetch_Array($select_id, OCI_BOTH);
-        if ($select_row){
+        if (preg_match('/http\S+(jpg|gif|png)/', $_POST['imgUrl'])){
+          $tag_array = explode(',', $_POST['imgTags']);
           foreach ($tag_array as &$tag_val){
-            $selecttagtuple = array (
-              ":tagVal" => $tag_val
+            $check_tuple = array (
+              ":tagValue" => $tag_val
             );
-            $alltagtuples = array (
-              $selecttagtuple
+            $allchecktuples = array (
+              $check_tuple
             );
-            $select_tag = executeBoundSQL("select tag_id from tag where tag_value=:tagVal", $alltagtuples);
-            $tag_row = OCI_Fetch_Array($select_tag, OCI_BOTH);
-            $tag_image_tuple = array (
-              ":img_id" => $select_row['IMAGE_ID'],
-              ":tag_id" => $tag_row['TAG_ID']
-            );
-            $all_tagimage = array (
-              $tag_image_tuple
-            );
-            $tag_image = executeBoundSQL("insert into tag_many_image values (:img_id, :tag_id)", $all_tagimage);
-            OCICommit($db_conn);
+            $check_result = executeBoundSQL("select tag_id from tag where tag_value=:tagValue", $allchecktuples);
+            $check_row = OCI_Fetch_Array($check_result, OCI_BOTH);
+            if (!$check_row){
+              $tag_insert = executeBoundSQL("insert into tag values (tag_seq.nextval, :tagValue)", $allchecktuples);
+              OCICommit($db_conn);
+            }
           }
           unset($tag_val);
-          header('Location: ' . $_SERVER['REQUEST_URI']);
+          $user = $_SESSION['Username'];
+          if (!isset($_SESSION['Username'])){
+            $user = 'Anonymous';
+          }
+          $tuple = array (
+            ":url" => $_POST['imgUrl'],
+            ":caption" => htmlspecialchars($_POST['imgCaption']),
+            ":username" => $user,
+          );
+          $alltuples = array (
+            $tuple
+          );
+          $result = executeBoundSQL("insert into tag_image values (img_seq.nextval, :username, :url, :caption, 0, 0, CURRENT_TIMESTAMP)", $alltuples);
+          OCICommit($db_conn);
+
+          $select_id = executeBoundSQL("select image_id from tag_image where image_link=:url and user_name=:username", $alltuples);
+          $select_row = OCI_Fetch_Array($select_id, OCI_BOTH);
+          if ($select_row){
+            foreach ($tag_array as &$tag_val){
+              $selecttagtuple = array (
+                ":tagVal" => $tag_val
+              );
+              $alltagtuples = array (
+                $selecttagtuple
+              );
+              $select_tag = executeBoundSQL("select tag_id from tag where tag_value=:tagVal", $alltagtuples);
+              $tag_row = OCI_Fetch_Array($select_tag, OCI_BOTH);
+              $tag_image_tuple = array (
+                ":img_id" => $select_row['IMAGE_ID'],
+                ":tag_id" => $tag_row['TAG_ID']
+              );
+              $all_tagimage = array (
+                $tag_image_tuple
+              );
+              $tag_image = executeBoundSQL("insert into tag_many_image values (:img_id, :tag_id)", $all_tagimage);
+              OCICommit($db_conn);
+            }
+            unset($tag_val);
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+          }
+        }
+        else{
+          echo "<script>alert('Image URL is not formatted properly (i.e. http://example.jpg)');</script>";
         }
       }
       else{

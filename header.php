@@ -16,6 +16,9 @@
   ini_set('session.gc_probability', 1);
   session_start(); 
   date_default_timezone_set('America/Los_Angeles');
+  $order = "order by rating desc";
+  $input = null;
+  $searchType = null;
 
   include 'main.php';
 
@@ -50,5 +53,6 @@
   <input type="submit" value="search" name="searchButton"/>
   </form>
 </div>
+
 <div id="container">
   <div id="content" class="divstyle shadow">

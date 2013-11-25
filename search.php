@@ -1,8 +1,5 @@
 <?php
 include 'header.php';
-  $order = "order by rating desc";
-  $input = null;
-  $searchType = null;
 
 ?>
 <h3>Search results for:
@@ -12,13 +9,23 @@ include 'header.php';
  
   	if ($db_conn){
   		if (array_key_exists('searchButton', $_POST)){ 
+        global $input, $searchType;
+        $input = $_POST['searchBox'];
+        $searchType = $_POST['searchType'];
   			query();
         include 'sortby.php';
  		}
-    elseif(array_key_exists('tester', $_POST)){
-      echo "</h3>This is not currently working.";
-      global $input;
-      var_dump($input);
+    // This is used to handle the case there a user selects a tag from view.php
+        else{
+        $url = $_SERVER['REQUEST_URI'];
+        preg_match("/^(.+?)\=(.+?)$/", $url, $match);
+        $searchType = "Tag";
+        $url_input = trim($match[2]); 
+        $input = urldecode($url_input);
+        query();
+    }
+      if(array_key_exists('tester', $_POST)){
+        echo "</h3>This is not currently working.";
     }
   }
 
@@ -29,8 +36,6 @@ include 'header.php';
 
 function query(){
         global $input, $searchType;
-        $input = $_POST['searchBox'];
-        $searchType = $_POST['searchType'];
   			$tuple = array (
   				":input" => $_POST['searchBox']
   				);
