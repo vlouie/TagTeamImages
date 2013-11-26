@@ -38,9 +38,35 @@ if ($db_conn){
     $conv_date = strtotime($row['UPLOAD_DATE']);
     echo "<img src='" . $row['IMAGE_LINK'] . "' class='centered maxSize' />";
     echo "<div class='innerdiv centered'>";
-    echo "<input type='button' class='viewNav' value='<' />";
-    echo "<input type='button' class='viewNav' value='>' />";
+    echo "<form method='POST' action=''>";
+    echo "<input type='submit' class='viewNav' value='<' name='navLeft' />";
+    echo "<input type='submit' class='viewNav' value='>' name='navRight' />";
+    echo "</form>";
     echo "</div>";
+    if (array_key_exists('navLeft', $_POST)){
+      $pageurl = $_SERVER['REQUEST_URI'];
+      preg_match("/^.+?\=(.+?)$/", $pageurl, $id_match);
+      $imgid = trim($id_match[1]);
+      if (intval($imgid) == 1){
+        header('Location: index.php');
+      }
+      else{
+        header('Location: view.php?id=' . strval(intval($imgid)-1));
+      }
+    }
+    elseif (array_key_exists('navRight', $_POST)){
+      $pageurl = $_SERVER['REQUEST_URI'];
+      preg_match("/^.+?\=(.+?)$/", $pageurl, $id_match);
+      $imgid = trim($id_match[1]);
+      $nav_result = executePlainSQL("select max(image_id) from tag_image");
+      $row = OCI_Fetch_Array($nav_result, OCI_BOTH);
+      if ($imgid == $row['MAX(IMAGE_ID)']){
+        header('Location: index.php');
+      }
+      else{
+        header('Location: view.php?id=' . strval(intval($imgid)+1));
+      }
+    }
 
     echo "<div class='innerdiv centered'>";
     if ($row['CAPTION']){
@@ -60,7 +86,7 @@ if ($db_conn){
         echo "<u><a href='search.php?tag=" . end($tag_array) . "'>";
         echo end($tag_array). "</a></u><br />"; 
 
-    echo "<form method='POST' action'?'>";
+    echo "<form method='POST' action''>";
     echo "<input type='submit' value='+1' name='voteUpButton' />";
     echo "<input type='submit' value='-1' name='voteDownButton' />";
     echo "</form>";
