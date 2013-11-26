@@ -1,14 +1,8 @@
 <?php
     
-    $db_conn=OCILogon("ora_r9y7", "a29831104", "ug");
-    $success = True;
-    session_save_path('tmp');
-    ini_set('session.gc_probability', 1);
-    session_start();
-    
     include 'header.php';
     
-    echo "<p>REPORT VALUES</p>";
+    echo "<h3>Report Values</h3>";
     
     // 1) Selection and Projection Query: User selects a max rating range, and
     // 2) Join: Display all the images within a specified tag id, joining to
@@ -19,8 +13,8 @@
     // Parse out the selected Tag Id and Name
     list($selectedTagId, $selectedTagName) = explode('|', $selectedTagIdAndName);
     
-    echo "<p>Images that have the tag " . $selectedTagName .
-    " and a rating greater than or equal to " . $maxrating . " </p>";
+    echo "<p><b>Images that have the tag " . $selectedTagName .
+    " and a rating greater than or equal to " . $maxrating . " </b></p>";
     
     if (isset($maxrating) && isset($selectedTagId) && isset($selectedTagName)) {
         
@@ -46,14 +40,16 @@
                 echo "No results for this query";
             } else {
                 do {
+                    echo "<p class = 'cropContainer'>";
                     echo "<a href='view.php?id=" . $row["IMAGE_ID"] . "'>";
-                    echo "<img src='" . $row['IMAGE_LINK'] . "' width='100px' />";
+                    echo "<img src='" . $row['IMAGE_LINK'] . "' class='cropped' />";
                     echo "</a>";
+                    echo "</p>";
                 } while ($row = OCI_Fetch_Array($result, OCI_BOTH));
             }
             
             
-            echo "<p>Display all images that have all types of tags</p>";
+            echo "<p><b>Display all images that have all types of tags</b></p>";
             
             $divtuple = array (
             );
@@ -85,7 +81,7 @@
         
         // Aggregation: Sum of user votes by user.
         
-        echo "<p>Sum of total votes by user</p>";
+        echo "<p><b>Sum of total votes by user</b></p>";
         
         $sumtuple = array (
         );
@@ -129,7 +125,7 @@
             echo "<p>No results for this query</p>";
         } else {
             do {
-                echo "<p>The highest ratest images have " .
+                echo "<p>The highest rated images have " .
                 $avgrow['AVERAGE_VIEWS'] . " average views";
                 
             } while ($sumrow = OCI_Fetch_Array($avgresult, OCI_BOTH));
@@ -141,7 +137,7 @@
          echo "<form name ='reportform' method ='POST' action ='report_confirm.php'>";
             
          echo "<p><input type = 'Submit' Name = 'Save Average Views Report'" .
-            "VALUE = 'generate_report'></p>";
+            "VALUE = 'Save Averages Report'></p>";
             
         } else {                
             echo "<p>Please select some report criteria from the previous page.</p>";

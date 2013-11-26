@@ -19,6 +19,7 @@
   $order = "order by rating desc";
   $input = null;
   $searchType = null;
+  $order_type=null;
 
   include 'main.php';
 

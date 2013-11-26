@@ -46,7 +46,7 @@
             );
             $result = executeBoundSQL("insert into tag_image values (img_seq.nextval, :username, :url, :caption, 0, 0, CURRENT_TIMESTAMP)", $alltuples);
             OCICommit($db_conn);
-
+              
             $select_id = executeBoundSQL("select image_id from tag_image where image_link=:url and user_name=:username", $alltuples);
             $select_row = OCI_Fetch_Array($select_id, OCI_BOTH);
             if ($select_row){
@@ -68,8 +68,10 @@
                   $tag_image_tuple
                 );
                 $tag_image = executeBoundSQL("insert into tag_many_image values (:img_id, :tag_id)", $all_tagimage);
-                OCICommit($db_conn);
               }
+              //commit after the transaction whole
+              OCICommit($db_conn);
+              oci_close($db_conn);//will rollback if any uncommited transactions
               unset($tag);
               header('Location: ' . $_SERVER['REQUEST_URI']);
             }

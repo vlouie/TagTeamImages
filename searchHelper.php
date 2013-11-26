@@ -2,57 +2,60 @@
 function query_helper($alltuples){
 	global $input;
 	global $searchType;
-  				switch($searchType){
-  					case "Surprise Me!":
-  						$query = surprise_query($alltuples);
-						break;
+	global $order;
 
-  					case "User":
-  						$query = "	join tag_user on tag_user.user_name = tag_image.user_name
-  									where lower(tag_user.user_name) = lower('".$input."')";
-  						break;
+	switch($searchType){
+		case "Surprise Me!":
+			$query = surprise_query($alltuples);
+		break;
 
-  					case "Tag":
-  						$query = "	join tag_many_image on tag_many_image.image_id = tag_image.image_id
-  									join tag on tag_many_image.tag_id = tag.tag_id
-  									where lower(tag_value) = lower('".$input."')";
-  						break;
+		case "User":
+			$query = "	join tag_user u on u.user_name=i.user_name
+						where lower(u.user_name)=lower('".$input."')";
+			break;
 
-  					default:
-						$query = "	join tag_many_image on tag_many_image.image_id = tag_image.image_id
-				  					join tag on tag.tag_id = tag_many_image.tag_id
-				  					where (	lower(caption) = lower('".$input."')
-				  					or lower(tag_value) = lower('".$input."'))";
-  						break;
+		case "Tag":
+			$query = "	join tag_many_image mi on mi.image_id=i.image_id
+						join tag on mi.tag_id=tag.tag_id
+						where lower(tag_value)=lower('".$input."')";
+			break;
 
-					}
-				
-			$result = executeBoundSQL("	select distinct tag_image.image_id,image_link, rating
-										from tag_image " . 
-										$query . 
-										" and rowNum <=10 " . 
-										$order, 
-										$alltuples);
+		default:
+			$query = "	join tag_many_image mi on mi.image_id=i.image_id
+						join tag t on t.tag_id=mi.tag_id
+						where(lower(caption)=lower('".$input."')
+						or lower(tag_value)=lower('".$input."'))";
+			break;
 
-			$numRows = executeBoundSQL("select count(*) as total from tag_image " . 
-										$query . 
-										" and rowNum <=10 " . 
-										$order, 
-										$alltuples);
+	}
+	$result = executeBoundSQL("	select distinct i.image_id,image_link, rating, upload_date
+								from tag_image i " . 
+								$query . 
+								$order, 
+								$alltuples);
 
-			if ($searchType == "Surprise Me!") {
-			}
-			else echo " <b><i>$input</i></b></h3>";
+	$numRows = executeBoundSQL("select count(*) as total from tag_image i " . 
+								$query . 
+								$order, 
+								$alltuples);
 
-			$total = OCI_Fetch_Array($numRows, OCI_BOTH);
-			if($total[0] == 0)
-				echo "There were zero results found.";
-			else{
+	if ($searchType == "Surprise Me!") {
+		//do nothing
+	}
+	else {
+		echo " <b><i>$input</i></b></h3>";
+	}
+
+	$total = OCI_Fetch_Array($numRows, OCI_BOTH);	
+	if($total[0] == 0){
+		echo "There were zero results found.";
+	}
+	else{
 ?>
 
 <!-- Adding the other dropdown here for sorting results -->
 
-  	<form method="POST" action="search.php">
+  	<form method="POST" action="">
       <INPUT type="submit" value="Change" name="tester" style="float: right;">
 	<select name='orderType' style="float: right;">
 		<option value="pop">Popularity (Default)</option>
@@ -62,46 +65,61 @@ function query_helper($alltuples){
 </form>
 
 <?php
-			echo "</br></br>";
-			while($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-				echo "<a href='view.php?id=" . $row["IMAGE_ID"] . "'>";
-				echo "<img src='" . $row['IMAGE_LINK'] . "' width='100px' height='100px' />";
-				echo "</a>";
-			}
+		echo "</br></br>";
+		while($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+      echo "<p class='cropContainer'>";
+			echo "<a href='view.php?id=" . $row["IMAGE_ID"] . "'>";
+			echo "<img src='" . $row['IMAGE_LINK'] . "' class='cropped' />";
+			echo "</a>";
+      echo "</p>";
 		}
 	}
+}
 
 function surprise_query($alltuples){
-$random = rand(0,2);
-$avgRate = executeBoundSQL("	select avg(rating) 
- 								from tag_image
- 								where image_id IN (
- 									select image_id
- 									from tag_vote
- 									group by image_id
- 									having count(*) > 0)", $alltuples);
-$avg = oci_fetch_array($avgRate, OCI_BOTH);
+	$random = rand(0,2);
+	$avgRate = executeBoundSQL("	select avg(rating) 
+	 								from tag_image
+	 								where image_id IN (
+	 									select image_id
+	 									from tag_vote
+	 									group by image_id
+	 									having count(*) > 0)", $alltuples);
 
- switch ($random) {
- 	case '0':
- 		echo "Images without negative comments and rating >=" . ceil($avg[0])."</h3>";
-		return "	where image_id NOT IN
-				(select distinct image_id from tag_vote where vote = '-1')
-				and rating >= $avg[0]";
- 		break;
-  	case '1':
-  	 	echo "Images by the one of the top uploaders.</h3>";
-		return "	where user_name = 	(select min(user_name)
-										from (select user_name, count(*) as numUpload from tag_image group by user_name)
-										where numUpload >= ALL (select count(*) from tag_image group by user_name))";
- 		break;
-  	case '2':
-  		echo "Create a third one.</h3>";
-		return " where user_name = 'nicole'";
- 		break;	
- 	default:
- 		echo "The random value return is not between 0 and 2.";
- 		break;
- }
+	$avg = oci_fetch_array($avgRate, OCI_BOTH);
+
+		 switch ($random) {
+		 	case '0':
+		 		echo "Images without negative comments and rating >=" . ceil($avg[0])."</h3>";
+				return "	where image_id NOT IN
+							(select distinct image_id from tag_vote where vote='-1')
+							and rating>=$avg[0]";
+		 		break;
+		  	case '1':
+		  	 	echo "Images by the one of the top uploaders.</h3>";
+				return "where user_name=(	select min(user_name)
+											from (	select user_name, count(*) as numUpload 
+													from tag_image 
+													group by user_name)
+											where numUpload>=ALL(	select count(*) 
+																	from tag_image 
+																	group by user_name))";
+		 		break;
+		  	case '2':
+		  		echo "This is a random third query.</h3>";
+				return ", tag_many_image, (select max(rating) as maxRating,tag_id 
+											from tag_image 
+											join tag_many_image on tag_image.image_id = tag_many_image.image_id
+											group by tag_id) topPerTags
+						where i.rating = topPerTags.maxRating 
+							and topPerTags.tag_id = tag_many_image.tag_id 
+							and tag_many_image.image_id = i.image_id";
+		 		break;	
+		 	default:
+		 		echo "The random value return is not between 0 and 2.";
+		 		break;
+		 }
 }
+
+
 ?>

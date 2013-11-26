@@ -1,14 +1,8 @@
 <?php
     
-    $db_conn=OCILogon("ora_r9y7", "a29831104", "ug");
-    $success = True;
-    session_save_path('tmp');
-    ini_set('session.gc_probability', 1);
-    session_start();
-    
     include 'header.php';
 
-    echo "<p>REPORT CONFIRMATION</p>";
+    echo "<h3>Report Confirmation</h3>";
     
         if ($db_conn){                     
             $insertresult = executePlainSQL("INSERT INTO tag_record " .

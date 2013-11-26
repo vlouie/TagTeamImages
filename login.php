@@ -12,14 +12,20 @@
           $alltuples = array (
             $tuple
           );
-          $result = executeBoundSQL("insert into tag_user values (:name, :type, :password)", $alltuples);
-          $_SESSION['Username'] = $_POST['username'];
-          $_SESSION['LoggedIn'] = 1;
-          $_SESSION['UserType'] = 'user';
-          //echo "<meta http-equiv='refresh' content='0;index.php'>";
-          header('Location: ' . $_SERVER['REQUEST_URI']);
-          
-          OCICommit($db_conn);
+          $checkresult = executeBoundSQL("select user_name from tag_user where user_name=:name", $alltuples);
+          $checkrow = OCI_Fetch_Array($checkresult, OCI_BOTH);
+          if (!$checkrow){
+            $result = executeBoundSQL("insert into tag_user values (:name, :type, :password)", $alltuples);
+            $_SESSION['Username'] = $_POST['username'];
+            $_SESSION['LoggedIn'] = 1;
+            $_SESSION['UserType'] = 'user';
+            header('Location: ' . $_SERVER['REQUEST_URI']);
+            
+            OCICommit($db_conn);
+          }
+          else{
+            echo "<script>alert('Username is already taken');</script>";
+          }
         }
         else{
           echo "<script>alert('Usernames and passwords cannot contain symbols');</script>";
@@ -50,7 +56,6 @@
             $_SESSION['Username'] = $_POST['username'];
             $_SESSION['LoggedIn'] = 1;
             $_SESSION['UserType'] = $row['USER_TYPE'];
-            //echo "<meta http-equiv='refresh' content='0;index.php'>";
             header('Location: ' . $_SERVER['REQUEST_URI']);
           }
           else{
@@ -80,7 +85,6 @@
       );
     }
     session_destroy();
-    //echo "<meta http-equiv='refresh' content='0;index.php'>";
     header('Location: ' . $_SERVER['REQUEST_URI']);
   }
  }

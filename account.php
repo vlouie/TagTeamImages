@@ -6,7 +6,12 @@
     echo "You are not logged in, there are no details for you to change.";
   }
   else{
-  ?>
+  
+      
+      if ($_SESSION['UserType'] == 'admin'){
+          echo "<p>> <a href='report.php'>Go to the admin reports page</a></p>";
+      }
+    ?>
   <form action="" method="post">
     <table border="0">
       <tr>

@@ -25,7 +25,7 @@ with the following tag: </p>
         } while ($row = OCI_Fetch_Array($result, OCI_BOTH));
     }
     ?>
-<p><input type = "Submit" Name = "Run Report" VALUE = "generate_report"></p>
+<p><input type = "Submit" Name = "Run Report" VALUE = "Generate Report"></p>
 </form>
 
 
