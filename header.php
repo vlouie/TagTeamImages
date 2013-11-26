@@ -16,7 +16,7 @@
   ini_set('session.gc_probability', 1);
   session_start(); 
   date_default_timezone_set('America/Los_Angeles');
-  $order = "order by rating desc";
+  $order = " order by rating desc";
   $input = null;
   $searchType = null;
   $order_type=null;

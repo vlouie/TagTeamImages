@@ -127,7 +127,7 @@ INSERT INTO TAG VALUES (35, 'DanIRL');
 INSERT INTO TAG VALUES (36, '90s');
 INSERT INTO TAG VALUES (37, 'cat');
 
-INSERT INTO TAG_IMAGE VALUES (1, 'victoria', 'http://goo.gl/EcaItJ', 'FLUFFERNUTTERS are delicious', '3', 5, '2013-11-25 00:00:00'); 
+INSERT INTO TAG_IMAGE VALUES (1, 'victoria', 'http://goo.gl/EcaItJ', 'FLUFFERNUTTERS are delicious', '5', 1, '2013-11-25 00:00:00'); 
 INSERT INTO TAG_IMAGE VALUES (2, 'jodi', 'http://imgur.com/ppDsu.jpg', 'A baby ocelot', '5', 5, '2013-10-10 17:50:59');  
 INSERT INTO TAG_IMAGE VALUES (3, 'victoria', 'http://imgur.com/xbvaWh.jpg', '', '2', 5, '2013-10-13 00:00:00');  
 INSERT INTO TAG_IMAGE VALUES (4, 'nicole', 'http://goo.gl/ka8g38', 'Self-cannibalism', '1', 5, '2013-10-18 12:00:00'); 
@@ -517,6 +517,7 @@ INSERT INTO TAG_RECORD  VALUES (7, 'best', '7','2013-11-25 00:00:07');
 INSERT INTO TAG_RECORD  VALUES (8, 'best', '8','2013-11-25 00:00:08');
 INSERT INTO TAG_RECORD  VALUES (9, 'best', '9','2013-11-25 00:00:09');
 INSERT INTO TAG_RECORD  VALUES (10, 'best', '10','2013-11-25 00:00:10');
+
 
 -- don't forget this, or nothing will be saved to the database!
 commit;
