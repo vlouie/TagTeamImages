@@ -35,7 +35,7 @@
     if (array_key_exists('updateButton', $_POST)){
       if ($_POST['oldPassword'] && $_POST['newPassword']){
         if (gettype($_POST['oldPassword']) == 'string' && gettype($_POST['newPassword']) == 'string'){
-          if (!preg_match('/[^a-zA-Z_\-0-9]/', $_POST['newPassword']) || !preg_match('/[^a-zA-Z_\-0-9]/', $_POST['oldPassword'])){
+          if (!preg_match('/[^a-zA-Z_\-0-9]/', $_POST['newPassword']) && !preg_match('/[^a-zA-Z_\-0-9]/', $_POST['oldPassword'])){
             $tuple = array (
               ":name" => $_SESSION['Username'],
             );

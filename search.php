@@ -10,13 +10,8 @@ include 'header.php';
       global $input, $searchType;
 
   		if (array_key_exists('searchButton', $_POST)){ 
+        $input = $_POST['searchBox'];
         $searchType = $_POST['searchType'];
-        if($searchType == "Surprise Me!"){
-          $input = rand(0,2);
-        }
-        else{
-        $input = $_POST['searchBox'];          
-        }
         $order = " order by rating desc";
         header("Location: search.php?".$searchType."=".$input);
  		   }
@@ -82,12 +77,7 @@ function url_helper(){
     $search_input = trim($match[1]);
     $searchType = urldecode($search_input);
     $url_input = trim($match[2]); 
-    if($searchType=="Surprise Me!"){
-      $random = $input;
-    }
-      else{
-            $input = urldecode($url_input);
-      }
+    $input = urldecode($url_input);
 }
 
 include 'footer.php';

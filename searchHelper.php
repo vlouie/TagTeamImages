@@ -77,6 +77,7 @@ function query_helper($alltuples){
 }
 
 function surprise_query($alltuples){
+	$random = rand(0,2);
 	$avgRate = executeBoundSQL("	select avg(rating) 
 	 								from tag_image
 	 								where image_id IN (
